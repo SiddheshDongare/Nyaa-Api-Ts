@@ -26,12 +26,14 @@ export class Handlers {
       const username = req.params.username;
       const queryParams = Utils.getSearchParameters(req);
 
-      const searchUrl = `${baseUrl}/user/${username}?q=${queryParams.query.trim()}&p=${
-        queryParams.page
-      }&s=${queryParams.sort}&o=${queryParams.order}&f=${queryParams.filter}`;
+      // Updated search URL format
+      const searchUrl = `${baseUrl}/user/${username}?p=${queryParams.page}&c=0_0`;
+
+      console.log("Constructed Search URL:", searchUrl); // Debugging line
 
       await Scrapers.scrapeNyaa(res, searchUrl);
     } catch (error) {
+      console.error("Error fetching user uploads:", error); // Enhanced error logging
       res.send(404, "Not Found");
     }
   };
@@ -44,12 +46,14 @@ export class Handlers {
       const category = Utils.getCategoryID(cat, subCat);
       const queryParams = Utils.getSearchParameters(req);
 
-      const searchUrl = `${baseUrl}?q=${queryParams.query.trim()}&c=${category}&p=${
-        queryParams.page
-      }&s=${queryParams.sort}&o=${queryParams.order}&f=${queryParams.filter}`;
+      // Updated search URL format
+      const searchUrl = `${baseUrl}?p=${queryParams.page}&c=${category}`;
+
+      console.log("Constructed Search URL:", searchUrl); // Debugging line
 
       await Scrapers.scrapeNyaa(res, searchUrl);
     } catch (error) {
+      console.error("Error fetching category torrents:", error); // Enhanced error logging
       res.send(404, "Not Found");
     }
   };
